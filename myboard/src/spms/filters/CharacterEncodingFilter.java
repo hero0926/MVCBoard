@@ -1,6 +1,7 @@
 package spms.filters;
 
 import java.io.IOException;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -9,8 +10,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebInitParam;
-
-//한글 이 되게 해주세요 ㅠㅠ
 
 @WebFilter(
 	urlPatterns="/*",
