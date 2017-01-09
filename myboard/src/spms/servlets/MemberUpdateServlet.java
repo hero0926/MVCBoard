@@ -2,7 +2,6 @@ package spms.servlets;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import spms.dao.MemberDao;
 import spms.vo.Member;
 
-// ServletContext에 보관된 MemberDao 사용하기   
+// 프런트 컨트롤러 적용 
 @SuppressWarnings("serial")
 @WebServlet("/member/update")
 public class MemberUpdateServlet extends HttpServlet {
@@ -29,16 +28,10 @@ public class MemberUpdateServlet extends HttpServlet {
           Integer.parseInt(request.getParameter("no")));
 
       request.setAttribute("member", member);
-
-      RequestDispatcher rd = request.getRequestDispatcher(
-          "/member/MemberUpdateForm.jsp");
-      rd.forward(request, response);
-
+      request.setAttribute("viewUrl", "/member/MemberUpdateForm.jsp");
+      
     } catch (Exception e) {
-      e.printStackTrace();
-      request.setAttribute("error", e);
-      RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
-      rd.forward(request, response);
+      throw new ServletException(e);
     }
   }
 
@@ -50,18 +43,13 @@ public class MemberUpdateServlet extends HttpServlet {
       ServletContext sc = this.getServletContext();
       MemberDao memberDao = (MemberDao) sc.getAttribute("memberDao");  
       
-      memberDao.update(new Member()
-      .setNo(Integer.parseInt(request.getParameter("no")))
-      .setName(request.getParameter("name"))
-      .setEmail(request.getParameter("email")));
+      Member member = (Member)request.getAttribute("member");
+      memberDao.update(member);
 
-      response.sendRedirect("list");
+      request.setAttribute("viewUrl", "redirect:list.do");
 
     } catch (Exception e) {
-      e.printStackTrace();
-      request.setAttribute("error", e);
-      RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
-      rd.forward(request, response);
+      throw new ServletException(e);
     }
   }
 }

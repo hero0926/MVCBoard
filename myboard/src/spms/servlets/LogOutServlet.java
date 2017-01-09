@@ -19,7 +19,7 @@ public class LogOutServlet extends HttpServlet {
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		session.invalidate();
-		
-		response.sendRedirect("login");
+
+	    request.setAttribute("viewUrl", "/auth/LogInForm.jsp");
 	}
 }
